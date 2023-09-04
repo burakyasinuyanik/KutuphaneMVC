@@ -50,27 +50,27 @@
                 }
                 ]
             })
-        
-            function kitapEkle(){
+
+        function kitapEkle() {
             $("#modalEkle").modal("show");
-            $("#btnKaydet").one("click",function(){
-                let gonderilecekVeri ={
-                    ad: $("txtKitapAd").val(),
-                    isbn: $("txtKitapIsbn").val()
+            $(".frmInput").val('');
+            $("#btnKaydet").one("click", function () {
+                let gonderilecekVeri = {
+                    ad: $("#txtKitapAd").val(),
+                    isbn: $("#txtKitapIsbn").val()
                 }
                 $.ajax({
-                    type:"POST",                  
-                     url:"/Kitap/Add",
-                     data: gonderilecekVeri,
-                    success:function(){
+                    type: "POST",
+                    url: "/Kitap/Add",
+                    data: gonderilecekVeri,
+                    success: function () {
                         $("#modalEkle").modal("hide");
                         toastr.success("Kayıt başarıyla eklenmiştir", "BAŞARILI !");
                         DataTable.ajax.reload();
                     }
                 });
-            }
-            }
-            
+            });
+        }
             
 
         function kitapSil(disaridanGelenId) {
