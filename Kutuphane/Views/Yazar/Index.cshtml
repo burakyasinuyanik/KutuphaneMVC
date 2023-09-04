@@ -85,10 +85,10 @@
                     { data: "ad", title: "Yazar Adı" },
                     { data: "ozgecmis", title: "Özgeçmiş" },
                     {
-                        data: "id", title: "İşlemler", render: function (data, type, row) {
+                       data: "id", title: "İşlemler", render: function (data, type, row) {
 
-                            return `<a onclick="yazarSil(${data})"  class="btn btn-danger">Sil</a>  
-                            <a onclick="yazarDuzenle(${data},'${row.ad}','${row.ozgecmis}')" class="btn btn-info">Düzenle</a>`
+                            return `<a class="btn btn-danger">Sil</a>  
+                                    <a class="btn btn-info">Düzenle</a>`
                         }
                     }
                 ]

@@ -19,9 +19,22 @@ namespace Kutuphane.Controllers
         public IActionResult Index()
         {
             
-            return View(_context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList());
+            return View();
         }
+        public IActionResult GetAll()
+        {
+            // _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
+           // List<Kitap> fullKitap = _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
+            return Json(new {data=_context.Kitaplar.ToList()});
+        }
+        [HttpPost]
+        public IActionResult DeleteAjax(int id)
+        {
 
+            _context.Kitaplar.Remove(_context.Kitaplar.Find(id));
+            _context.SaveChanges();
+            return Ok("Çalıştım");
+        }
         public IActionResult Add()
         {
             ViewData["Yazarlar"] = _context.Yazarlar.ToList();
@@ -41,7 +54,7 @@ namespace Kutuphane.Controllers
          
             _context.Kitaplar.Add(kitap);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         public IActionResult Update(int id)
