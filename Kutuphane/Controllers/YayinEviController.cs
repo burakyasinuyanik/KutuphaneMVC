@@ -22,7 +22,7 @@ namespace Kutuphane.Controllers
 
         public IActionResult GetAll()
         {
-            return Json(_context.YayinEvleri.ToList());
+            return Json(new { data = _context.YayinEvleri.ToList() });
         }
 
 
@@ -36,7 +36,7 @@ namespace Kutuphane.Controllers
         {
             _context.YayinEvleri.Add(yayinEvi);
             _context.SaveChanges();
-            return RedirectToAction("Index");
+            return Ok();
         }
 
         public IActionResult Delete(int id)

@@ -42,9 +42,11 @@
 
         $(document).ready(function () {
 
+
             $("#btnEkle").click(function () {
                 $(".frmInput").val('');
                 $("#modalEkle").modal('show');
+                
                 $("#btnKaydet").one('click',function () {
 
                     let gonderilecekOlanVeri = {
@@ -63,7 +65,6 @@
 
                             toastr.success("Kayıt başarıyla eklenmiştir", "BAŞARILI !");
                             DataTable.ajax.reload();
-
 
 
                         }
@@ -87,8 +88,8 @@
                     {
                        data: "id", title: "İşlemler", render: function (data, type, row) {
 
-                            return `<a class="btn btn-danger">Sil</a>  
-                                    <a class="btn btn-info">Düzenle</a>`
+                            return `<a onclick="yazarSil(${data})" class="btn btn-danger">Sil</a>
+                                    <a onclick="yazarDuzenle(${data},'${row.ad}','${row.ozgecmis}')" class="btn btn-info">Düzenle</a>`
                         }
                     }
                 ]
