@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.6.33801.468
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kutuphane", "Kutuphane\Kutuphane.csproj", "{C0B951E1-1F28-4842-8CAF-44882FAE62A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kutuphane", "Kutuphane\Kutuphane.csproj", "{C0B951E1-1F28-4842-8CAF-44882FAE62A0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kutuphane.Models", "Kutuphane.Models\Kutuphane.Models.csproj", "{8A753021-3B42-4DA0-A920-8F9C333B40C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kutuphane.Models", "Kutuphane.Models\Kutuphane.Models.csproj", "{8A753021-3B42-4DA0-A920-8F9C333B40C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kutuphane.Data", "Kutuphane.Data\Kutuphane.Data.csproj", "{57F1677A-38E1-4964-8949-C3BF67205F20}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kutuphane.Data", "Kutuphane.Data\Kutuphane.Data.csproj", "{57F1677A-38E1-4964-8949-C3BF67205F20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kutuphane.Repository", "Kutuphane.Repository\Kutuphane.Repository.csproj", "{36E986F5-E010-42BA-8275-B8781DC78B5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +29,10 @@ Global
 		{57F1677A-38E1-4964-8949-C3BF67205F20}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{57F1677A-38E1-4964-8949-C3BF67205F20}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{57F1677A-38E1-4964-8949-C3BF67205F20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36E986F5-E010-42BA-8275-B8781DC78B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36E986F5-E010-42BA-8275-B8781DC78B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36E986F5-E010-42BA-8275-B8781DC78B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36E986F5-E010-42BA-8275-B8781DC78B5A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

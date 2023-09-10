@@ -1,7 +1,7 @@
 ﻿@section Styles{
     <link href="//cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" rel="stylesheet" />
 }
-<a id="btnEkle" onclick="ekle()" class="btn btn-primary">EKLE</a>
+<a id="btnEkle"  class="btn btn-primary">EKLE</a>
 <table id="tblYayinEvi" class="table table-striped">
 </table>
 
@@ -45,37 +45,70 @@
                     {data:"tel",title:"Yayın Evi Telefon"},
                     {data:"id",title:"İşlemler",render: function(data,type,row){
                             return `<a onclick="yayinEviSil(${data})" class="btn btn-danger">Sil</a>
-                                            <a onclick="yazarDuzenle(${data},'${row.ad}','${row.ozgecmis}')" class="btn btn-info">Düzenle</a>`
+                                            <a onclick="yayinEviDuzenle(${data},'${row.ad}','${row.adres}','${row.tel}')" class="btn btn-info">Düzenle</a>`
                         
                     }}
                 ]
             })
         })
-
-      function ekle(){
-           
-                $("#modalEkle").modal("show")
-                $(".frmInput").val("")
-                $("#btnKaydet").one("click", function () {
-                    let gonderilecekVeri = {
-                        ad: $("#txtYayinAd").val(),
-                        adres: $("#txtYayinAdres").val(),
-                        tel: $("#txtYayinTel").val()
-
-                    }
-                    $.ajax({
-                        type: "POST",
-                        url: "/YayinEvi/Upsert",
-                        data: gonderilecekVeri,
-                        success: function () {
-                            $('#modalEkle').modal('hide');
-                            toastr.success("Kayıt başarıyla eklenmiştir", "BAŞARILI !");
-                            DataTable.ajax.reload();
-                        }
-                    })
-                })
+        function yayinEviDuzenle(id,ad,adres,tel){
+            $("#modalEkle").modal("show");
             
-      }
+            $("#txtYayinAd").val(ad);
+            $("#txtYayinAdres").val(adres);
+            $("#txtYayinTel").val(tel);
+            
+            $("#btnKaydet").off().one("click",function(){
+                let gonderilecekOlanVeri = {
+                    ad: $("#txtYayinAd").val(),
+                    adres: $("#txtYayinAdres").val(),
+                    tel: $("#txtYayinTel").val(),
+                    id: id
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/YayinEvi/Upsert",
+                    data: gonderilecekOlanVeri,
+                    success: function () {
+                        $('#modalEkle').modal('hide');
+                        toastr.success("Kayıt başarıyla düzenlenmiştir", "BAŞARILI !");
+                        DataTable.ajax.reload();
+                    }
+                })
+
+            })
+           
+
+        }
+      
+            $("#btnEkle").click(function (){
+            $("#modalEkle").modal("show")
+            $(".frmInput").val("")
+            $("#btnKaydet").off().one("click", function () {
+                let gonderilecekVeri = {
+                    ad: $("#txtYayinAd").val(),
+                    adres: $("#txtYayinAdres").val(),
+                    tel: $("#txtYayinTel").val()
+
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "/YayinEvi/Upsert",
+                    data: gonderilecekVeri,
+                    success: function () {
+                        $('#modalEkle').modal('hide');
+                        toastr.success("Kayıt başarıyla eklenmiştir", "BAŞARILI !");
+                        DataTable.ajax.reload();
+                    }
+                })
+            })
+
+
+
+
+        })
+               
+      
         function yayinEviSil(id) {
 
             Swal.fire({

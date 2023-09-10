@@ -7,7 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="7.0.10" />
+    <Folder Include="Concrete\" />
+    <Folder Include="Abstract\" />
+    <Folder Include="Shared\Abstract\" />
+    <Folder Include="Shared\Concrete\" />
   </ItemGroup>
 
 </Project>

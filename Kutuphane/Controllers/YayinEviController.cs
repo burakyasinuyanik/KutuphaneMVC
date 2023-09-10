@@ -71,17 +71,7 @@ namespace Kutuphane.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Upsert(int? id)
-        {
-            if(id==0)
-            {
-                return View();
-            }
-            else
-            {
-                return View(_context.YayinEvleri.Find(id));
-            }
-        }
+
 
         [HttpPost]
         public IActionResult Upsert(YayinEvi yayinEvi)
@@ -100,7 +90,7 @@ namespace Kutuphane.Controllers
                 _context.SaveChanges();
             }
 
-            return RedirectToAction("Index");   
+            return Ok();   
         }
     }
 }

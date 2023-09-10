@@ -47,7 +47,7 @@
                 $(".frmInput").val('');
                 $("#modalEkle").modal('show');
                 
-                $("#btnKaydet").one('click',function () {
+                $("#btnKaydet").off().one('click',function () {
 
                     let gonderilecekOlanVeri = {
                         ad: $("#txtYazarAd").val(),
@@ -103,7 +103,7 @@
             $("#txtYazarAd").val(ad);
             $("#txtYazarOzgecmis").val(ozgecmis);
 
-            $("#btnKaydet").one('click',function () {
+            $("#btnKaydet").off().one('click',function () {
                 let gonderilecekOlanVeri = {
                     ad: $("#txtYazarAd").val(),
                     ozgecmis: $("#txtYazarOzgecmis").val(),
