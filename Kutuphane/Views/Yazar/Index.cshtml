@@ -14,7 +14,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Yazar Ekleme Formu</h5>
+                <h5 class="modal-title" id="modalTitleId">Yazar <span id="lblF"></span> Formu</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -45,6 +45,7 @@
 
             $("#btnEkle").click(function () {
                 $(".frmInput").val('');
+                $("#lblF").text("Ekleme");
                 $("#modalEkle").modal('show');
                 
                 $("#btnKaydet").off().one('click',function () {
@@ -72,7 +73,7 @@
 
 
 
-                })
+                }).text("Kaydet").removeClass("btn-warning").addClass("btn-success");
 
             });
 
@@ -99,6 +100,7 @@
 
         })
         function yazarDuzenle(id,ad,ozgecmis) {
+            $("#lblF").text("Düzenleme");
             $("#modalEkle").modal('show');
             $("#txtYazarAd").val(ad);
             $("#txtYazarOzgecmis").val(ozgecmis);
@@ -126,7 +128,7 @@
 
                     }
                 });
-            })
+            }).text("Güncelle").removeClass("btn-success").addClass("btn-warning");
 
 
         }
