@@ -25,7 +25,7 @@ namespace Kutuphane.Controllers
         {
             // _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
            // List<Kitap> fullKitap = _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
-            return Json(new {data=_context.Kitaplar.ToList()});
+            return Json(new {data=_context.Kitaplar.Include(y=>y.Yazarlar).Include(y=>y.YayinEvleri).ToList()});
         }
         [HttpPost]
         public IActionResult DeleteAjax(int id)
