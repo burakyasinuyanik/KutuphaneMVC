@@ -9,7 +9,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Yazar Ekleme Formu</h5>
+                <h5 class="modal-title" id="modalTitleId">Yazar <span id="lblF"></span> Formu</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -52,6 +52,7 @@
             })
         })
         function yayinEviDuzenle(id,ad,adres,tel){
+            $("#lblF").text("Düzenleme")
             $("#modalEkle").modal("show");
             
             $("#txtYayinAd").val(ad);
@@ -76,14 +77,15 @@
                     }
                 })
 
-            })
+            }).text("Düzenle").removeClass("btn-success").addClass("btn-warning");
            
 
         }
       
             $("#btnEkle").click(function (){
-            $("#modalEkle").modal("show")
-            $(".frmInput").val("")
+            $("#lblF").text("Ekleme");
+            $("#modalEkle").modal("show");
+            $(".frmInput").val("");
             $("#btnKaydet").off().one("click", function () {
                 let gonderilecekVeri = {
                     ad: $("#txtYayinAd").val(),
@@ -101,7 +103,7 @@
                         DataTable.ajax.reload();
                     }
                 })
-            })
+            }).text("Kaydet").removeClass("btn-warning").addClass("btn-success");
 
 
 
