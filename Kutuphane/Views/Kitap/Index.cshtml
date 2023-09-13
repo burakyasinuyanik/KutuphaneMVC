@@ -12,7 +12,7 @@
     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalTitleId">Yazar Ekleme Formu</h5>
+                <h5 class="modal-title" id="modalTitleId">Kitap <span id="spnText"></span> Formu</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -40,18 +40,7 @@
         
             DataTable=$("#tblKitaplar").DataTable({
                 ajax:"/Kitap/GetAll",
-               dom: 'Bfrtip',
-            buttons: [
-                {
-                    extend: 'pdf',
-                    text: 'Save current page',
-                    exportOptions: {
-                        modifier: {
-                            page: 'current'
-                        }
-                    }
-                }
-            ],
+               
                 columns: [
                     {data:"id",title:"Kitap ID"},
                     {data:"ad",title:"Kitap Adı"},
@@ -75,15 +64,17 @@
                 { data: "id", title: "İşlemler" , render: function (data, type, row) {
 
                     return `<a  onclick="kitapSil(${data})" class="btn btn-danger">Sil</a>
-                            <a  onclick="kitapDuzenle()" class="btn btn-info">Düzenle</a>`
+                            <a  onclick="kitapDuzenle(${data})" class="btn btn-info">Düzenle</a>`
                 }
                 }
                 ]
             })
 
             $("#btnEkle").on("click",function(){
+            $("#spnText").text("Ekleme");
             $("#modalEkle").modal("show");
-
+            $("#ddlYazarlar").empty();
+            $("#ddlYayinEvi").empty();
             $.ajax({
                 type: "GET",
                 url: "/Yazar/GetAll",
@@ -115,7 +106,8 @@
             })
 
             $(".frmInput").val('');
-            $("#btnKaydet").off().one("click", function () {
+            $("#btnKaydet").removeClass("btn-warning").addClass("btn-primary").text("Kaydet").off().one("click", function () {
+                
                 let gonderilecekVeri = {
                     ad: $("#txtKitapAd").val(),
                     isbn: $("#txtKitapIsbn").val()
@@ -186,7 +178,94 @@
 
 
         }
+        function kitapDuzenle(id){
+            $("#spnText").text("Düzenleme");
+            let kitapId=id;
+            $.ajax({
+                type:"POST",
+                url:"/Kitap/GetById",
+                data:{
+                    id:id
+                },
+                success:function(res){
+                    $("#modalEkle").modal("show");
+                    $("#txtKitapAd").val(res.ad);
+                    $("#txtKitapIsbn").val(res.isbn);
+                $.ajax({
+                    type:"GET",
+                        url: "/Yazar/GetAll",
+                    success:function(resYazar){
+                            $("#ddlYazarlar").empty();
+                            for (var item of resYazar.data) {
 
+                              $("#ddlYazarlar").append(new Option(item.ad, item.id, false, res.yazarlar.find(r => r.id == item.id)!=null));
+
+                        }
+                            $('#ddlYazarlar').select2({
+                                dropdownParent: $("#modalEkle"),
+                                placeholder: 'Yazar Seçiniz',
+                                width: "100%"
+                            });
+
+                    }
+                })
+                $.ajax({
+
+                    type:"GET",
+                    url:"/YayinEvi/GetAll",
+                    success:function(yayinEvi){
+                            $("#ddlYayinEvi").empty();
+                        for(var yayin1 of yayinEvi.data){
+
+                                $("#ddlYayinEvi").append(new Option(yayin1.ad, yayin1.id, false, res.yayinEvleri.find(r => r.id == yayin1.id) != null));
+                        }
+
+                            $('#ddlYayinEvi').select2({
+                                dropdownParent: $("#modalEkle"),
+                                placeholder: 'Yayın Evi Seçiniz',
+                                width: "100%"
+                            });
+                    }
+
+                })
+
+                    $("#btnKaydet").removeClass("btn-primary").addClass("btn-warning").text("Düzenle").off().one("click", function () {
+
+                        let gonderilecekVeri = {
+                            ad: $("#txtKitapAd").val(),
+                            isbn: $("#txtKitapIsbn").val(),
+                            id:kitapId
+                        }
+                        let yazarlar = [];
+                        $("#ddlYazarlar option:selected").each(function () {
+                            yazarlar.push($(this).val());
+                        });
+                        let yayinEvi = [];
+                        $("#ddlYayinEvi option:selected").each(function () {
+                            yayinEvi.push($(this).val());
+                        });
+                        $.ajax({
+                            type: "POST",
+                            url: "/Kitap/Update",
+                            data: {
+                                kitap: gonderilecekVeri,
+                                yazarlar: yazarlar,
+                                yayinEvleri: yayinEvi
+
+
+                            },
+                            success: function () {
+                                $("#modalEkle").modal("hide");
+                                toastr.success("Kayıt başarıyla güncellenmiştir", "BAŞARILI !");
+                                DataTable.ajax.reload();
+                            }
+                        });
+                    });
+}                   
+            })
+            
+
+        }
 
     </script>
    

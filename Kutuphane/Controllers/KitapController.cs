@@ -56,7 +56,11 @@ namespace Kutuphane.Controllers
             _context.SaveChanges();
             return Ok();
         }
-
+        [HttpPost]
+        public IActionResult GetById(int id)
+        {
+            return Json(_context.Kitaplar.Include(y => y.YayinEvleri).Include(y => y.Yazarlar).First(k=>k.Id==id));
+        }
         public IActionResult Update(int id)
         {
             ViewData["Yazarlar"] = _context.Yazarlar.ToList();
