@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kutuphane.Data\Kutuphane.Data.csproj" />
+    <ProjectReference Include="..\Kutuphane.Repository\Kutuphane.Repository.csproj" />
   </ItemGroup>
 
 </Project>

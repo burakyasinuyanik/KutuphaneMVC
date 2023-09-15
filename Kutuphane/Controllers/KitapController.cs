@@ -1,5 +1,6 @@
 ﻿using Kutuphane.Data;
 using Kutuphane.Models;
+using Kutuphane.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -9,11 +10,15 @@ namespace Kutuphane.Controllers
     public class KitapController:Controller
     {
         //dependency injection ile contextimizi çekelim
-        private readonly KutuphaneContext _context;
+        private readonly IKitapRepository _db;
+        private readonly IYazarRepository _yazarRepository;
+        private readonly IYayinEviRepository _yayinEviRepository;
 
-        public KitapController(KutuphaneContext context)
+        public KitapController(IKitapRepository db, IYayinEviRepository yayinEviRepository, IYazarRepository yazarRepository)
         {
-            _context = context;
+            _db = db;
+            _yayinEviRepository = yayinEviRepository;
+            _yazarRepository = yazarRepository;
         }
 
         public IActionResult Index()
@@ -25,20 +30,20 @@ namespace Kutuphane.Controllers
         {
             // _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
            // List<Kitap> fullKitap = _context.Kitaplar.Include(k => k.YayinEvleri).Include(k => k.Yazarlar).ToList();
-            return Json(new {data=_context.Kitaplar.Include(y=>y.Yazarlar).Include(y=>y.YayinEvleri).ToList()});
+            return Json(new {data=_db.GetAll().ToList()});
         }
         [HttpPost]
         public IActionResult DeleteAjax(int id)
         {
 
-            _context.Kitaplar.Remove(_context.Kitaplar.Find(id));
-            _context.SaveChanges();
+            _db.Remove(_db.GetById(id));
+            _db.Save();
             return Ok("Çalıştım");
         }
         public IActionResult Add()
         {
-            ViewData["Yazarlar"] = _context.Yazarlar.ToList();
-            ViewData["YayinEvleri"] = _context.YayinEvleri.ToList();
+            //ViewData["Yazarlar"] = _db.Yazarlar.ToList();
+            //ViewData["YayinEvleri"] = _context.YayinEvleri.ToList();
 
             return View();
         }
@@ -46,34 +51,36 @@ namespace Kutuphane.Controllers
         public IActionResult Add(Kitap kitap, List<int> yazarlar,List<int> yayinEvleri)
         {
             foreach(int s in yazarlar)
-                kitap.Yazarlar.Add(_context.Yazarlar.Find(s));
+                kitap.Yazarlar.Add(_yazarRepository.GetById(s));
             
             foreach (int s in yayinEvleri)
-                kitap.YayinEvleri.Add(_context.YayinEvleri.Find(s));
+                kitap.YayinEvleri.Add(_yayinEviRepository.GetById(s));
 
          
-            _context.Kitaplar.Add(kitap);
-            _context.SaveChanges();
+            _db.Add(kitap);
+            _db.Save();
             return Ok();
         }
         [HttpPost]
         public IActionResult GetById(int id)
         {
-            return Json(_context.Kitaplar.Include(y => y.YayinEvleri).Include(y => y.Yazarlar).First(k=>k.Id==id));
+            
+            return Json(_db.GetById(id));
         }
         public IActionResult Update(int id)
         {
-            ViewData["Yazarlar"] = _context.Yazarlar.ToList();
-            ViewData["YayinEvleri"] = _context.YayinEvleri.ToList();
+            //ViewData["Yazarlar"] = _context.Yazarlar.ToList();
+            //ViewData["YayinEvleri"] = _context.YayinEvleri.ToList();
 
 
-            return View(_context.Kitaplar.Include(k => k.Yazarlar).Include(k => k.YayinEvleri).FirstOrDefault(k => k.Id == id));
+            return View(_db.GetAll().Where(k => k.Id == id));
         }
 
         [HttpPost]
         public IActionResult Update(Kitap kitap, List<int> yazarlar, List<int> yayinEvleri)
         {
-            Kitap asil = _context.Kitaplar.Include(k=>k.YayinEvleri).Include(k=>k.Yazarlar).FirstOrDefault(k=>k.Id==kitap.Id);
+            
+            Kitap asil = _db.GetAll().FirstOrDefault(k => k.Id == kitap.Id); 
 
             asil.Ad = kitap.Ad;
             asil.ISBN = kitap.ISBN;
@@ -81,17 +88,17 @@ namespace Kutuphane.Controllers
             List<Yazar> yazarListesi = new List<Yazar>();
             List<YayinEvi> yayinEvleriListesi = new List<YayinEvi>();
             foreach (int s in yazarlar)
-                yazarListesi.Add(_context.Yazarlar.Find(s));
+                yazarListesi.Add((_yazarRepository.GetById(s)));
 
             foreach (int s in yayinEvleri)
-               yayinEvleriListesi.Add(_context.YayinEvleri.Find(s));
+               yayinEvleriListesi.Add(_yayinEviRepository.GetById(s));
 
             asil.Yazarlar = yazarListesi;
             asil.YayinEvleri = yayinEvleriListesi;
 
 
-            _context.Kitaplar.Update(asil);
-            _context.SaveChanges();
+            _db.Update(asil);
+            _db.Save();
             return RedirectToAction("Index");
 
 

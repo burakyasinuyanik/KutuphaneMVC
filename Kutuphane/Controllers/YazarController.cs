@@ -1,5 +1,6 @@
 ﻿using Kutuphane.Data;
 using Kutuphane.Models;
+using Kutuphane.Repository.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Kutuphane.Controllers
@@ -7,10 +8,11 @@ namespace Kutuphane.Controllers
     public class YazarController : Controller
     {
         //Dependency Injection
-        private readonly KutuphaneContext _context;
-        public YazarController(KutuphaneContext context)
+        private readonly IYazarRepository _YazarRepo;
+
+        public YazarController(IYazarRepository yazarRepo)
         {
-            _context = context;
+            _YazarRepo = yazarRepo;
         }
 
         public IActionResult Index()
@@ -20,7 +22,7 @@ namespace Kutuphane.Controllers
 
         public IActionResult GetAll()
         {
-            return Json(new { data = _context.Yazarlar.ToList() });
+            return Json(new { data = _YazarRepo.GetAll() });
         }
                
         public IActionResult Delete(int id)
@@ -29,9 +31,9 @@ namespace Kutuphane.Controllers
 
            // Yazar yazar = _context.Yazarlar.FirstOrDefault(x => x.Id == id);
           
-            _context.Yazarlar.Remove(_context.Yazarlar.Find(id));
+            _YazarRepo.Remove(_YazarRepo.GetById(id));
 
-            _context.SaveChanges();
+            _YazarRepo.Save();
 
 
             return RedirectToAction("Index");
@@ -39,11 +41,11 @@ namespace Kutuphane.Controllers
         }
              
 
-        public IActionResult Upsert(int? id)
+        public IActionResult Upsert(int id)
         {
-            if (id != null)
+            if (id != 0)
             {
-                return View(_context.Yazarlar.Find(id));
+                return View(_YazarRepo.GetById(id));
             }
             else {
                 return View();
@@ -55,13 +57,13 @@ namespace Kutuphane.Controllers
         {
             if(yazar.Id==0)
             {
-                _context.Yazarlar.Add(yazar);
-                _context.SaveChanges();
+                _YazarRepo.Add(yazar);
+                _YazarRepo.Save();
             }
             else
             {
-                _context.Yazarlar.Update(yazar);
-                _context.SaveChanges();
+                _YazarRepo.Update(yazar);
+                _YazarRepo.Save();
             }
             return RedirectToAction("Index");
         }

@@ -7,6 +7,7 @@ namespace Kutuphane.Models
         [Key]
         public int Id { get; set; }
         public string Ad { get; set;}
+        public bool IsDeleted { get; set; }
 
     }
 }
