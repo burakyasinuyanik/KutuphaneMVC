@@ -37,6 +37,7 @@ namespace Kutuphane.Controllers
         {
 
             _db.Remove(_db.GetById(id));
+
             _db.Save();
             return Ok("Çalıştım");
         }
@@ -64,8 +65,9 @@ namespace Kutuphane.Controllers
         [HttpPost]
         public IActionResult GetById(int id)
         {
-            
-            return Json(_db.GetById(id));
+           Kitap kitaps =_db.GetAll().FirstOrDefault(k=>k.Id == id);
+            Kitap kitap = _db.GetById(id);
+            return Json(kitap);
         }
         public IActionResult Update(int id)
         {

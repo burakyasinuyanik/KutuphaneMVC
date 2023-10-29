@@ -196,9 +196,9 @@
                         url: "/Yazar/GetAll",
                     success:function(resYazar){
                             $("#ddlYazarlar").empty();
-                            for (var item of resYazar.data) {
+                            for (var yazar of resYazar.data) {
 
-                              $("#ddlYazarlar").append(new Option(item.ad, item.id, false, res.yazarlar.find(r => r.id == item.id)!=null));
+                              $("#ddlYazarlar").append(new Option(yazar.ad, yazar.id, false, res.yazarlar.find(r => r.id == yazar.id)!=null));
 
                         }
                             $('#ddlYazarlar').select2({
@@ -208,7 +208,7 @@
                             });
 
                     }
-                })
+                });
                 $.ajax({
 
                     type:"GET",
